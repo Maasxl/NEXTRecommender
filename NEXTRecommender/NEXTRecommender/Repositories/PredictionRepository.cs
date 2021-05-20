@@ -23,7 +23,7 @@ namespace NEXTRecommender.Repositories
         }
         public IEnumerable<CampsiteRatingData> GetAllCampsiteRatingData()
         {
-            throw new NotImplementedException();
+            return _campsiteRatingData.Find(data => true).ToList();
         }
     }
 }
