@@ -2,6 +2,7 @@
 using NEXTRecommender.Models;
 using NEXTRecommender.Models.Settings;
 using NEXTRecommender.Repositories.Interfaces;
+using RecommendationWorker.MongoDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +15,19 @@ namespace NEXTRecommender.Repositories
 
         private readonly IMongoCollection<CampsiteRatingData> _campsiteRatingData;
 
-        public PredictionRepository(IMongoDatabaseSettings settings)
+        public PredictionRepository(IMongoDBContext context)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _campsiteRatingData = database.GetCollection<CampsiteRatingData>(settings.UserRatingsCollection);
+            _campsiteRatingData = context.GetCampsiteRatingDataCollection();
         }
+
         public IEnumerable<CampsiteRatingData> GetAllCampsiteRatingData()
         {
-            return _campsiteRatingData.Find(data => true).ToList();
+            IEnumerable<CampsiteRatingData> campsiteRatingDatas = _campsiteRatingData.Find(data => true).ToList();
+            if (campsiteRatingDatas.Any())
+            {
+                return campsiteRatingDatas;
+            }
+            throw new Exception("No Rating data found!");
         }
     }
 }

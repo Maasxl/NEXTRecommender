@@ -16,6 +16,7 @@ using NEXTRecommender.Repositories;
 using NEXTRecommender.Repositories.Interfaces;
 using NEXTRecommender.Services;
 using NEXTRecommender.Services.Interfaces;
+using RecommendationWorker.MongoDB;
 
 namespace NEXTRecommender
 {
@@ -39,6 +40,7 @@ namespace NEXTRecommender
 
             services.AddScoped<IPredictionService, PredictionService>();
             services.AddScoped<IPredictionRepository, PredictionRepository>();
+            services.AddScoped<IMongoDBContext, MongoDBContext>();
 
             services.AddControllers();
         }

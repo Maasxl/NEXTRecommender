@@ -21,9 +21,16 @@ namespace NEXTRecommender.Controllers
         }
 
         [HttpPost]
-        public ActionResult<List<CampsiteRatingPrediction>> GetPrediction([FromBody]PredictionRequest predictionRequest)
+        public ActionResult<List<CampsiteRatingPrediction>> GetPredictionforCampsites([FromBody]PredictionRequest predictionRequest)
         {
-            return _predictionService.GetPrediciton(predictionRequest.UserId, predictionRequest.Campsites);
+            try
+            {
+                return Ok(_predictionService.GetPrediciton(predictionRequest.UserId, predictionRequest.Campsites));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
     }
 }
